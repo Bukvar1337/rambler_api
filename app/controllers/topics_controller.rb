@@ -1,17 +1,18 @@
 class TopicsController < ApplicationController
   before_action :find_topic, only: [:show, :update, :destroy]
   SORTABLE_COLUMNS = %w(created_at id)
+  SORTABLE_METHODS = %w(ASC DESC)
 
   def index
     @topics = Topic.includes([:rubric, :tags]).all
-
+    #filters
     @topics = @topics.where(rubric_id: params[:rubric_id]) if params[:rubric_id]
-    @topics = @topics.where(tags: { id: params[:tag_id] }) if params[:tag_id]
+    @topics = @topics.where(tags: { "id": params[:tag_id] }) if params[:tag_id]
     @topics = @topics.where(id: params[:id]) if params[:id]
-
-    if params[:sort]
-      query = Sorter::Main.new(params[:sort], SORTABLE_COLUMNS).call
-      @topics = @topics.order(query)
+    #order
+    if params[:sort_column] && SORTABLE_COLUMNS.include?(params[:sort_column]) &&
+      params[:sort_method] && SORTABLE_METHODS.include?(params[:sort_method])
+      @topics = @topics.order("topics.#{params[:sort_column]} #{params[:sort_method]}")
     end
 
     paginate json: ActiveModelSerializers::SerializableResource.new(

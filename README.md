@@ -34,9 +34,14 @@ DB_PASSWORD=MyPassword
                     "path": "/api/topics",
                     "query": [
                         {
-                            "key": "sort",
-                            "value": "id ASC",
-                            "description": "sort by id or created at field"
+                            "key": "sort_column",
+                            "value": "<string>",
+                            "description": "sort by field (id, created_at)"
+                        },
+                        {
+                            "key": "sort_method",
+                            "value": "<string>",
+                            "description": "sort by method (ASC, DESC)"
                         },
                         {
                             "key": "id[]",

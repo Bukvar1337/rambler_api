@@ -16,7 +16,7 @@ class RubricsController < ApplicationController
 
   def show
     render json: ActiveModelSerializers::SerializableResource.new(
-      @tag,
+      @rubric,
       serializer: RubricsSerializer::Main,
       include: [
       ]
